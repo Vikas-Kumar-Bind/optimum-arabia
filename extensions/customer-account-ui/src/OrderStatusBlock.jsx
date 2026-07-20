@@ -1,4 +1,5 @@
 import "@shopify/ui-extensions/customer-account";
+import { useNavigation } from "@shopify/ui-extensions/customer-account/preact";
 import { render } from "preact";
 import { useState, useRef } from "preact/hooks";
 
@@ -7,6 +8,7 @@ export default async () => {
 };
 
 function Extension() {
+  const navigation = useNavigation();
   const [helpTopic, setHelpTopic] = useState("");
   const [subject, setSubject] = useState("");
   const [details, setDetails] = useState("");
@@ -91,8 +93,6 @@ function Extension() {
         },
       );
       const json = await response.json();
-      console.log("json>>>>", json);
-
       if (json.data?.customer) {
         setCustomer({
           firstName: json.data.customer.firstName || "",
@@ -219,8 +219,6 @@ function Extension() {
         },
       );
       const responseText = await response.text();
-      console.log("responseText>>>", responseText);
-
       let result = {};
       try {
         result = JSON.parse(responseText);
@@ -250,21 +248,15 @@ function Extension() {
       await shopify.toast.show(successMessage);
       const newTicketId = result?.data?.id ?? result?.id ?? result?.ticket?.id;
       if (!newTicketId) {
-        console.error(
-          "Ticket created but no id was returned in the response:",
-          result,
-        );
         await shopify.toast.show(
           "Ticket created, but couldn't open details automatically.",
         );
         return;
       }
       const ticketId = result.data.id;
-
-      await shopify.navigation.navigate(
-        `/account/pages/ticket-history?ticketId=${ticketId}`,
-      );
-      // await shopify.navigation.navigate("extension://customer-account-ui-2");
+      await navigation.navigate("extension:customer-account-ui-2", {
+        state: `ticket=${ticketId}`,
+      });
     } catch (err) {
       console.error(err);
       const message =
@@ -274,8 +266,7 @@ function Extension() {
   }
 
   return (
-    <s-page>
-      <s-heading>Create Ticket</s-heading>
+    <s-page heading="Create Ticket">
       <s-stack gap="large" inlineSize="650px">
         <s-select
           label="* Help Topic"
@@ -397,7 +388,7 @@ function UploadRow({
               accessibilityLabel="Add upload"
               onClick={onAdd}
             >
-              +
+              + Add More
             </s-button>
           )}
           {canRemove && (
@@ -407,7 +398,7 @@ function UploadRow({
               accessibilityLabel="Remove upload"
               onClick={() => onRemove(field.id)}
             >
-              −
+              - Remove
             </s-button>
           )}
         </s-stack>

@@ -1,11 +1,14 @@
+import { useNavigation } from "@shopify/ui-extensions/customer-account/preact";
 import "@shopify/ui-extensions/preact";
 import { render } from "preact";
 import { useEffect, useState } from "preact/hooks";
+
 export default async () => {
   render(<Extension />, document.body);
 };
 
 function Extension() {
+  const navigation = useNavigation();
   const [loading, setLoading] = useState(true);
   const [ticket, setTicket] = useState(null);
   const [error, setError] = useState("");
@@ -15,17 +18,28 @@ function Extension() {
     loadTicket();
   }, []);
 
-  function getTicketIdFromUrl() {
+  function getTicketIdFromNavigation() {
     try {
-      const params = new URLSearchParams(window.location.search);
-      return params.get("ticketId");
+      const state = navigation.currentEntry?.getState?.();
+      if (!state) return null;
+
+      if (typeof state === "string") {
+        return state;
+      }
+
+      if (typeof state === "object") {
+        return state.ticketId || state.ticket || state.id || null;
+      }
+
+      return null;
     } catch (e) {
       return null;
     }
   }
 
   async function loadTicket() {
-    const ticketId = getTicketIdFromUrl();
+    const ticketId = getTicketIdFromNavigation();
+    console.log("ticketId", ticketId);
 
     if (!ticketId) {
       setError("No ticket ID was provided.");
@@ -34,7 +48,7 @@ function Extension() {
     }
     try {
       const response = await fetch(
-        `https://hul-services.enscommerce.in/optimum-nutrition-arabia/freshdesk/get-ticket/${encodeURIComponent(ticketId)}`,
+        `https://hul-services.enscommerce.in/optimum-nutrition-arabia/freshdesk/get-ticket/${encodeURIComponent(ticketId.split("ticket=")[1])}`,
       );
       const json = await response.json();
       if (!json.success) {
@@ -70,14 +84,14 @@ function Extension() {
   const ORDER_TABLE_COLUMNS = "100px 1.5fr 100px 160px 1.2fr 110px 110px 1.5fr";
   if (loading) {
     return (
-      <s-page>
+      <s-page heading="All tickets">
         <s-spinner />
       </s-page>
     );
   }
   if (error) {
     return (
-      <s-page>
+      <s-page heading="All tickets">
         <s-banner tone="critical">
           <s-text>{error}</s-text>
         </s-banner>
@@ -90,7 +104,7 @@ function Extension() {
     : extractOrderRowsFromDescription(ticket.description_text);
 
   return (
-    <s-page heading="">
+    <s-page heading="All tickets">
       <s-stack gap="large">
         <s-box border="base" borderRadius="large" overflow="hidden">
           <s-box
