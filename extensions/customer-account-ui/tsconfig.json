@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact",
+    "target": "ES2021",
+    "allowJs": true,
+    "checkJs": false,   // ✅ turn off TS checking for JS
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true // ✅ recommended
+  },
+  "include": ["./src", "./shopify.d.ts"]
+}
