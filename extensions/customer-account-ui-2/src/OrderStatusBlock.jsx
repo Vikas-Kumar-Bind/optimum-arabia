@@ -117,7 +117,7 @@ function Extension() {
       await loadAllOrderDetails(validDetails);
     } catch (e) {
       console.error(e);
-      setError(e.message);
+      setError("No ticket has been raised yet.");
     } finally {
       setLoading(false);
     }
@@ -162,7 +162,7 @@ function Extension() {
   if (error) {
     return (
       <s-page heading="All tickets">
-        <s-banner tone="critical">
+        <s-banner tone="info">
           <s-text>{error}</s-text>
         </s-banner>
       </s-page>
