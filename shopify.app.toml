@@ -1,19 +1,19 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "6aae0409e1426e3858f865c65fc42d0f"
-name = "optimum-arabia"
-application_url = "https://daily-soup-angeles-pda.trycloudflare.com"
+client_id = "ae2b9cae3bfed0e7b4087cfd8493f60f"
+name = "Optimum Arabia"
+application_url = "https://shopify.dev/apps/default-app-home"
 embedded = true
 
 [build]
 automatically_update_urls_on_dev = true
 
 [webhooks]
-api_version = "2026-07"
+api_version = "2026-10"
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
 scopes = "read_customers,read_orders,customer_read_customers,unauthenticated_read_customers,customer_read_orders,customer_read_customers,customer_read_metaobjects"
 
 [auth]
-redirect_urls = [ "https://daily-soup-angeles-pda.trycloudflare.com/api/auth" ]
+redirect_urls = [ "https://shopify.dev/apps/default-app-home/api/auth" ]
