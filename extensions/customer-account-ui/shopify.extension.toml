@@ -6,7 +6,7 @@
 api_version = "2026-04"
 
 [[extensions]]
-name = "customer-account-ui"
+name = "Create Ticket"
 handle = "customer-account-ui"
 uid = "9ebaa5f0-a0d8-25bf-6290-c55f579e4dfac7c7fcd2"
 type = "ui_extension"

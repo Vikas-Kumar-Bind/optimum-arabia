@@ -6,7 +6,7 @@
 api_version = "2026-04"
 
 [[extensions]]
-name = "customer-account-ui-2"
+name = "Ticket History"
 handle = "customer-account-ui-2"
 uid = "3661fa84-f284-3b30-d4f2-18724a9724e2dc59c3d3"
 type = "ui_extension"
